@@ -23,14 +23,11 @@ final class StatusTipTask extends Task{
             $entityCount += count($world->getEntities());
         }
 
-        $tip = implode("\n", [
-            "TPS: {$server->getTicksPerSecond()} ({$server->getTickUsage()}%)",
-            "Threads: {$threadCount}, Memory: {$totalMemory} MB",
+        $server->broadcastTip(
+            "Server: {$server->getName()}_v{$server->getApiVersion()} (PHP " . phpversion() . ")\n" .
+            "TPS: {$server->getTicksPerSecond()} ({$server->getTickUsage()}%)\n" .
+            "Threads: {$threadCount}, Memory: {$totalMemory} MB\n" .
             "World({$worldCount}) Chunk: {$chunkCount}, Entity: {$entityCount}"
-        ]);
-
-        foreach($server->getOnlinePlayers() as $player){
-            $player->sendTip($tip);
-        }
+        );
     }
 }
