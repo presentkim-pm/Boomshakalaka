@@ -20,10 +20,10 @@ use pocketmine\plugin\PluginBase;
 
 final class Boomshakalaka extends PluginBase implements Listener{
     /** @var \Closure[] (int) item id => \Closure(Player $player, Item $item) : void */
-    private array $useHandler = [];
+    private array $useHandlers = [];
 
     protected function onLoad() : void{
-        $this->useHandler[ItemIds::TNT] = function(Player $player, Item $_) : void{
+        $this->useHandlers[ItemIds::TNT] = function(Player $player, Item $_) : void{
             $i = 0;
             foreach($player->getLineOfSight(120) as $block){
                 while($block->getSide(Facing::DOWN)->getId() === BlockLegacyIds::AIR && $block->getPos()->y >= 0){
@@ -33,7 +33,7 @@ final class Boomshakalaka extends PluginBase implements Listener{
                 $entity->spawnToAll();
             }
         };
-        $this->useHandler[ItemIds::SPAWN_EGG] = function(Player $player, Item $item) : void{
+        $this->useHandlers[ItemIds::SPAWN_EGG] = function(Player $player, Item $item) : void{
             if(!$item instanceof SpawnEgg)
                 return;
 
@@ -45,7 +45,7 @@ final class Boomshakalaka extends PluginBase implements Listener{
                 $item->onInteractBlock($player, $block, $block, Facing::UP, new Vector3(0, 0, 0));
             }
         };
-        $this->useHandler[ItemIds::DIAMOND_SWORD] = function(Player $player, Item $_) : void{
+        $this->useHandlers[ItemIds::DIAMOND_SWORD] = function(Player $player, Item $_) : void{
             foreach($player->getWorld()->getEntities() as $entity){
                 if(!$entity instanceof $player){
                     $entity->flagForDespawn();
@@ -62,7 +62,7 @@ final class Boomshakalaka extends PluginBase implements Listener{
     public function onPlayerItemUse(PlayerItemUseEvent $event) : void{
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
-        $executor = $this->useHandler[$item->getId()] ?? null;
+        $executor = $this->useHandlers[$item->getId()] ?? null;
         if($executor !== null){
             $event->cancel();
             ($executor)($player, $item);
