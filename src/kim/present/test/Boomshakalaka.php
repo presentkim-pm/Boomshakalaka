@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace kim\present\test;
 
-use kim\present\test\task\StatusTipTask;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\Location;
 use pocketmine\entity\object\PrimedTNT;
@@ -56,7 +55,6 @@ final class Boomshakalaka extends PluginBase implements Listener{
 
     protected function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getScheduler()->scheduleRepeatingTask(new StatusTipTask(), 2);
     }
 
     public function onPlayerItemUse(PlayerItemUseEvent $event) : void{
