@@ -17,17 +17,23 @@ final class StatusTipTask extends Task{
         $worldCount = 0;
         $chunkCount = 0;
         $entityCount = 0;
+        $tileCount = 0;
         foreach($server->getWorldManager()->getWorlds() as $world){
-            $worldCount += 1;
+            ++$worldCount;
+            foreach($world->getChunks() as $chunk){
+                ++$chunkCount;
+
+                $entityCount += count($chunk->getEntities());
+                $tileCount += count($chunk->getTiles());
+            }
             $chunkCount += count($world->getChunks());
-            $entityCount += count($world->getEntities());
         }
 
         $server->broadcastTip(
             "Server: {$server->getName()}_v{$server->getApiVersion()} (PHP " . phpversion() . ")\n" .
             "TPS: {$server->getTicksPerSecond()} ({$server->getTickUsage()}%)\n" .
             "Threads: {$threadCount}, Memory: {$totalMemory} MB\n" .
-            "World({$worldCount}) Chunk: {$chunkCount}, Entity: {$entityCount}"
+            "World({$worldCount}) Chunk: {$chunkCount}, Entity: {$entityCount}, Tile: {$tileCount}"
         );
     }
 }
