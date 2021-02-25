@@ -69,7 +69,7 @@ final class Boomshakalaka extends PluginBase implements Listener{
                     $block = $block->getSide(Facing::DOWN);
                 }
 
-                $item->onInteractBlock($player, $block, $block, Facing::UP, new Vector3(0, 0, 0));
+                (clone $item)->onInteractBlock($player, $block, $block, Facing::UP, new Vector3(0, 0, 0));
             }
         };
         $this->useHandlers[ItemIds::DIAMOND_SWORD] = function(Player $player, Item $_) : void{
