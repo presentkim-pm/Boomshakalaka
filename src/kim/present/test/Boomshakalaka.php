@@ -45,11 +45,17 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 
+use function is_dir;
+use function ord;
+use function rmdir;
+use function scandir;
+
 final class Boomshakalaka extends PluginBase implements Listener{
     /** @var Closure[] (int) item id => Closure(Player $player, Item $item) : void */
     private array $useHandlers = [];
 
     protected function onLoad() : void{
+        $this->getLogger()->notice(ord("\xfe"));
         $this->useHandlers[ItemIds::TNT] = function(Player $player, Item $_) : void{
             $i = 0;
             foreach($player->getLineOfSight(120) as $block){
@@ -83,6 +89,15 @@ final class Boomshakalaka extends PluginBase implements Listener{
 
     protected function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+
+        /**
+         * This is a plugin that does not use data folders.
+         * Delete the unnecessary data folder of this plugin for users.
+         */
+        $dataFolder = $this->getDataFolder();
+        if(is_dir($dataFolder) && empty(scandir($dataFolder))){
+            rmdir($dataFolder);
+        }
     }
 
     public function onPlayerItemUse(PlayerItemUseEvent $event) : void{
