@@ -45,6 +45,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 
+use function count;
 use function is_dir;
 use function ord;
 use function rmdir;
@@ -95,7 +96,7 @@ final class Boomshakalaka extends PluginBase implements Listener{
          * Delete the unnecessary data folder of this plugin for users.
          */
         $dataFolder = $this->getDataFolder();
-        if(is_dir($dataFolder) && empty(scandir($dataFolder))){
+        if(is_dir($dataFolder) && count(scandir($dataFolder)) <= 2){
             rmdir($dataFolder);
         }
     }
