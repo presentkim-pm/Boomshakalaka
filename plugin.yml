@@ -1,8 +1,9 @@
 ---
 name: Boomshakalaka
 main: kim\present\test\Boomshakalaka
-version: 1.0.0
-api: [ 4.0.0 ]
+src-namespace-prefix: kim\present\test
+version: 2.0.0
+api: [ 5.51.0 ]
 author: PresentKim
-description: Simple perfomance test tool!
+description: Simple performance test tool!
 ...
